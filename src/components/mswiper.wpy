@@ -1,0 +1,64 @@
+<style lang="less">
+  @w: 100%;
+  @h: ~" 300rpx";
+  .swiper-container {
+    width: 100%;
+    height: @h;
+  }
+</style>
+
+<template>
+  <swiper class="swiper-container" indicator-dots="{{indicator}}" autoplay="{{autoplay}}"
+          duration="500 " circular="{{true}}">
+    <block wx:for="{{imgUrls}}" wx:key="{{1}}">
+      <swiper-item class="swiper-container" @tap="click({{item}})">
+        <image src="{{item.imageUrl}}" class="swiper-container"></image>
+      </swiper-item>
+    </block>
+  </swiper>
+
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Mswiper extends wepy.component {
+    data = {
+      imgUrls: [],
+      autoplay: {  // 是否自动切换
+        type: Boolean,
+        default: true
+      },
+      indicator: {  // 是否自动切换
+        type: Boolean,
+        default: true
+      }
+    };
+    methods = {
+      click(item) {
+        console.log(item.title)
+        this.$emit('sw', item)
+      }
+    };
+
+    onLoad() {
+      var _url = 'https://api.pinduoduo.com/api/jinbao/wechat/theme/list'
+
+      var _data = {'type': 1, 'pageNumber': 1, 'pageSize': 6, 'token': '12_ZGS5xBtZXOs8IBK9MSuRQoacqWdiZEZfocOJwKJ7cuKwWZRnJjhJquHcLb0Uxzun9xcAG0nuSc2ADMJUmx6Si862u6X3Fm3qgeKmuWXc4h0'}
+      var that = this
+      wepy.request({
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        url: _url,
+        data: _data
+      }
+      ).then((respone) => {
+        console.log('banner', respone)
+        that.imgUrls = respone.data.result.themeList
+        this.$apply()
+      }
+      )
+    }
+  }
+</script>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/assets/icon_category.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_category_selected.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_collect.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_collect_selected.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_home.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_home_selected.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_money.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_user.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/assets/icon_user_selected.png" charset="GBK" />
+    <file url="file://$USER_HOME$/Documents/guevara/src/pages/orders/pddorderlist.wpy" charset="UTF-8" />
+  </component>
+</project>

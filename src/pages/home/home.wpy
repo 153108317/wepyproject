@@ -1,0 +1,114 @@
+<style lang="less">
+  .home {
+    background: white;
+  }
+
+  .title {
+    color: #0f0;
+    padding: ~"10rpx";
+    background: white;
+  }
+
+  .post {
+    float: right;
+    background-color: #ffff00;
+    position: fixed;
+    width: ~'100rpx';
+    height: ~'100rpx';
+    bottom: 20px;
+    right: 10px;
+    border: 0 solid #ffffff;
+    border-radius: 500px;
+    box-shadow: 4px 1px 1px #cccccc;
+  }
+
+  .tabs2 {
+    position: relative;
+    width: 100%;
+
+    background: white;
+  }
+
+</style>
+<template>
+
+  <view class="title">
+  </view>
+  <mswiper fixed="true"></mswiper>
+  <view  style=" position:{{mposition}} ; background: white ; top:0px ; width: 100%">
+    <tabs1></tabs1>
+  </view>
+  <icon type="success" size="50rpx" class="post" @tap="backToTop"/>
+  <view style="position: fixed ; color: #000 ; ">{{tabs2Potion}}</view>
+  <product></product>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  import Mswiper from '../../components/mswiper'
+  import Tabs from '../../components/tabs'
+  import Product from '../../components/product'
+
+  export default class home extends wepy.page {
+    config = {
+      navigationBarTitleText: '首页'
+    }
+    components = {
+      mswiper: Mswiper,
+      tabs1: Tabs,
+      product: Product
+    }
+    data = {
+      selected: 0,
+      tabId: -1,
+      tabs2Potion: 0,
+      mposition: 'static'
+    }
+    methods = {}
+    events = {
+      sw(item) {
+        wepy.navigateTo('/pages/home/product')
+        wepy.showModal({
+          title: item.title
+        })
+      },
+      mtabs(item) {
+        this.tabId = item.optId
+
+        this.$invoke('product', 'product1', 0, this.tabId)
+        // wepy.showModal(
+        //   {
+        //     title: item.name
+        //   })
+      }
+    }
+
+    onLoad() {
+      this.tabs2Potion = 100
+     // var self = this
+    }
+
+    onReachBottom() {
+      this.$broadcast('product', 2)
+      //   this.$invoke('./../components/Product', 'product1', 3)
+      this.$invoke('product', 'product1', 3, this.tabId)
+    }
+
+    backToTop() {
+      wepy.pageScrollTo({
+        scrollTop: 0,
+        duration: 400
+      })
+    }
+
+    onPageScroll(e) {
+      this.tabs2Potion = e.scrollTop
+      if (this.tabs2Potion > 150) {
+        this.mposition = 'fixed'
+      } else {
+        this.mposition = 'static'
+      }
+      this.$apply()
+    }
+  }
+</script>

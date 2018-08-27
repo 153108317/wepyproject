@@ -1,0 +1,108 @@
+<style lang="less">
+  @mcolor:bisque;
+  @mtextcolor:aqua;
+  .mpositon-static{
+    position: static;
+    color:@mcolor;
+    background: @mcolor;
+    padding-top: ~"400rpx";
+  }
+  .mposition-relative{
+    position: relative;
+    color: @mcolor;
+    margin-top: ~'100rpx';
+    padding-left: ~'100rpx';
+    background: @mcolor;
+  }
+  .mposition-absolute{
+    position: absolute;
+    margin-top: ~'400rpx';
+    color:@mcolor;
+    background: @mcolor;
+  }
+  .mposition-fixed{
+    position: fixed;
+    background: @mcolor;
+    color: @mcolor;
+  }
+  .mposition-sticky{
+    position:sticky;
+    color: @mcolor;
+    background: @mcolor;
+    border: aqua;
+    border-width: ~'5prx';
+    padding: ~'5rpx';
+  }
+  .mtext{
+    color:@mtextcolor;
+    background: white;
+    padding-left: ~'10rpx';
+  }
+  .mmargin{
+    margin: ~"5rpx";
+  }
+  .mborder{
+    border-color: #0f0;
+    border-bottom-width: 10px;
+    box-sizing: border-box;
+  }
+</style>
+<template>
+  <scroll-view>
+
+    <view class="mpositon-static mborder">
+      <text class="mtext">position-mpositon-static-1</text>
+      <text class="mtext">position-mpositon-static-2</text>
+    </view>
+    <view class="mposition-relative">
+      <text class="mtext">position-mposition-relative-1</text>
+      <text class="mtext">position-mposition-relative-2</text>
+    </view>
+
+    <view class="mposition-absolute">
+      <text class="mtext">position-mposition-absolute-1</text>
+      <text class="mtext">position-mposition-absolute-2</text>
+    </view>
+    <view class="mposition-fixed">
+      <text class="mtext">position-mposition-fixed-1</text>
+      <text class="mtext">position-mposition-fixed-2</text>
+    </view>
+    <view class="mposition-sticky">
+      <text class="mtext mmargin ">position-mposition-sticky-1</text>
+      <text class="mtext">position-mposition-sticky-2</text>
+    </view>
+  <view style="flex-direction: row">
+    <icon type="success" color="red" size="40"></icon>
+    <repeat for="{{iconType}}" key="1">
+      <icon type="{{item}}" size="40"color="red"></icon>
+    </repeat>
+   <block wx:for="{{iconType}}" wx:key="2" >
+     <icon type="{{item}}" size="40"color="green"></icon>
+   </block>
+   <block wx:for="{{iconColor}}" wx:key="2" >
+     <icon type="success" size="40"color="{{item}}"></icon>
+   </block>
+    <image src="../../assets/icon_category_selected.png" style="width: 180rpx ; height:180rpx "></image>
+    <view ></view>
+  </view>
+  </scroll-view>
+</template>
+<script>
+  import wepy from 'wepy'
+  export default class Test extends wepy.page {
+    data={
+      iconSize: [20, 30, 40, 50, 60, 70],
+      iconColor: [
+        'red', 'orange', 'yellow', 'green', 'rgb(0,255,255)', 'blue', 'purple'
+      ],
+      iconType: [
+        'success', 'success_no_circle', 'info', 'warn', 'waiting', 'cancel', 'download', 'search', 'clear'
+      ]
+    }
+    onLoad() {
+      wepy.login().then((respone) => {
+        console.log(respone)
+      })
+    }
+}
+</script>

@@ -1,0 +1,179 @@
+<style lang="less">
+  .recommend-content {
+    justify-content: space-between;
+    background: #fafafa;
+    display: flex;
+    padding-right: ~'10rpx';
+    padding-bottom: ~'10rpx';
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+  }
+
+  .singleTrade {
+    background: #fff;
+    margin-left: ~'5rpx';
+    display: flex;
+    width: 49%;
+    padding-bottom: ~'20rpx';
+    flex-direction: column;
+    border-bottom: ~'20rpx' solid #fafafa;
+    border-radius: ~'6rpx';
+  }
+
+  .img {
+    width: 100%;
+    height: ~'340rpx';
+    border-top-left-radius: ~'6rpx';
+    border-top-right-radius: ~'6rpx';
+  }
+
+  .mname {
+    margin-top: ~'5rpx';
+    margin-bottom: ~'5rpx';
+    font-size: ~'26rpx';
+    color: #333;
+    height: ~'56rpx';
+    display: -webkit-box;
+    line-height: ~'28rpx';
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bottom-layout {
+    padding-left: ~'5rpx';
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+  }
+
+  .bottom-left {
+    display: flex;
+    width: ~'230rpx';
+    flex-flow: row;
+    flex-wrap: wrap;
+  }
+
+  .bottom-price {
+    width: ~'280rpx';
+    color: #fb4456;
+  }
+
+  .price-intro {
+    width: ~'110rpx';
+    background: rgba(255, 135, 95, 0.06);
+    border-radius: ~'6rpx';
+    justify-content: center;
+    align-items: center;
+    border: ~'2rpx' solid #ff9470;
+    height: ~'22rpx';
+    color: #fd784c;
+    font-size: ~'18rpx';
+  }
+
+  .bottom-btn-pay {
+    align-content: center;
+    color: white;
+    font-size: ~'20rpx';
+    width: ~'80rpx';
+    height: ~'40rpx';
+    padding-left: ~'10rpx';
+    padding-right: ~'10rpx';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #fb4456 0%, #fd7b4e 100%);
+    border-radius: ~'34rpx';
+  }
+
+</style>
+<template>
+  <view class='recommend-content'>
+    <repeat for='{{list}}' key='{{item.goodsId}}'>
+      <view class='singleTrade' id='{{item.goodsId}}' data-productid='{{item.goodsId}}' @tap='click'>
+        <image src='{{item.goodsPic}}' class='img'/>
+        <text class='mname'>{{item.goodsName}}</text>
+        <view class='bottom-layout'>
+          <view class='bottom-left'>
+            <text class='bottom-price'>¥{{item.goodsEvalScore}}</text>
+            <text class='price-intro'>惠金币抵扣价</text>
+          </view>
+          <view class='bottom-btn-pay'>立即购买</view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Product extends wepy.component {
+    data = {
+      list: [],
+      currentPage: Number,
+      tabId: -99999,
+      hasMore: true,
+      newList: []
+    }
+    methods = {
+      click() {
+        console.log('click')
+      }
+    }
+
+    getProduct(id) {
+      if (!this.hasMore) {
+        return
+      }
+      this.currentPage++
+      var url = `https://api.pinduoduo.com/api/targaryen/query_goods_list_by_opt_id?optId=${id}&pageNum=${this.currentPage}&pageSize=20&sortType=1`
+      var that = this
+      console.log(url)
+      wepy.request(url).then((respone) => {
+        this.newList =
+         respone.data.result.goodsList
+        if (this.newList.length < 1) {
+          this.hasMore = false
+          return
+        }
+        for (var item in this.newList) {
+          console.log(item)
+        }
+        if (this.currentPage === 1) {
+          that.list = this.newList
+        } else {
+          that.list = [...this.list, ...this.newList]
+        }
+
+        that.$apply()
+        console.log(that.list)
+      })
+    }
+
+    onLoad() {
+      this.currentPage = 0
+      this.getProduct(this.tabId)
+    }
+
+    events = {
+      product: (p) => {
+        console.log(p)
+      }
+    }
+
+    product1(p, id) {
+      console.log(p)
+      if (p === 0) {
+        this.currentPage = p
+      }
+      this.tabId = id
+      this.getProduct(this.tabId)
+    }
+  }
+
+</script>

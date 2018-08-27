@@ -1,0 +1,13 @@
+{
+  "description": "firstproject",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wxfd59879f7c332885",
+  "projectname": "wepyproject",
+  "miniprogramRoot": "./dist"
+}

@@ -1,0 +1,72 @@
+<style lang="less">
+
+  .sv{
+    white-space: nowrap;
+    width: 100%;
+  }
+  .sv-item {
+    display: inline-block;
+    height: ~"90rpx";
+    min-width: ~'100rpx';
+   // flex-direction: column;
+  }
+
+  .tab-item {
+    color: #000;
+    padding-left: ~"15rpx";
+    padding-top: ~"15rpx";
+   // display: inline-block;
+    height: ~"190rpx";
+   // align-items: start;
+    align-items: center;
+  }
+
+  .tab-item-select {
+    color: #f00;
+    padding-left: ~"15rpx";
+  //  display: inline-block;
+    height: ~"90rpx";
+    align-items: center;
+  }
+
+</style>
+<template>
+  <scroll-view class="sv" scroll-x="true"  scroll-with-animation="true">
+    <bolck wx:for="{{tablist}}" wx:key="1">
+      <view @tap="tabclick({{index}},{{item}})" class="sv-item">
+        <view class=" {{selected === index ? 'tab-item-select' :'tab-item' }} ">
+          {{item.optName}}
+        </view>
+      </view>
+    </bolck>
+  </scroll-view>
+</template>
+<script>
+  import wepy from 'wepy'
+ // import request from '../api/api'
+
+  export default class Tabs extends wepy.component {
+    data = {
+      tablist: [],
+      selected: 0
+    }
+    methods = {
+      tabclick(index, item) {
+        this.selected = index
+        console.log(index)
+        this.$emit('mtabs', item)
+      }
+    }
+    onLoad() {
+      // this.product()
+      var that = this
+      var url = 'https://api.pinduoduo.com/api/targaryen/query_opt_list'
+      wepy.request(url).then((respone) => {
+        console.log('respone.result', respone.data.result)
+        that.tablist = [...respone.data.result.optList]
+        this.$apply()
+      }
+      )
+    }
+  }
+</script>

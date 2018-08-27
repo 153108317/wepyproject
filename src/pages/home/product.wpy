@@ -1,0 +1,18 @@
+<style lang="less"></style>
+<template>
+  <product></product>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Product from '../../components/product'
+
+  export default class productlist
+    extends wepy.page {
+    components = {
+      product: Product
+    }
+
+    onLoad() {
+    }
+  }
+</script>
