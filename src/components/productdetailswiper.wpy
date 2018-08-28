@@ -1,0 +1,50 @@
+<template>
+  <swiper class="swiper" wx:if="{{list.length>0}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}"
+          interval="{{interval}}" duration="{{duration}}" indicator-active-color="#ff0000">
+    <block wx:for="{{list}}" wx:key="1">
+      <swiper-item>
+        <image class="image" src="{{item}}"/>
+      </swiper-item>
+    </block>
+  </swiper>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ProductDetailSwiper extends wepy.component {
+    props = {
+      list: [],
+      indicatorDots: {
+        type: [Boolean],
+        default: false
+      },
+      autoplay: {
+        type: [Boolean],
+        default: false
+      },
+      interval: {
+        type: [Number],
+        default: 1000
+      },
+      duration: {
+        type: [Number],
+        default: 1000
+      }
+
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+
+<style lang="less" scoped>
+  .swiper {
+    .image {
+      width: 100%;
+      height: ~'750rpx';
+
+    }
+  }
+</style>

@@ -73,6 +73,8 @@
     height: ~'22rpx';
     color: #fd784c;
     font-size: ~'18rpx';
+    text-align: center;
+    line-height:~'22rpx' ;
   }
 
   .bottom-btn-pay {
@@ -94,7 +96,7 @@
 <template>
   <view class='recommend-content'>
     <repeat for='{{list}}' key='{{item.goodsId}}'>
-      <view class='singleTrade' id='{{item.goodsId}}' data-productid='{{item.goodsId}}' @tap='click'>
+      <view class='singleTrade' id='{{item.goodsId}}' data-productid='{{item.goodsId}}' @tap='click({{item.goodsId}})'>
         <image src='{{item.goodsPic}}' class='img'/>
         <text class='mname'>{{item.goodsName}}</text>
         <view class='bottom-layout'>
@@ -121,8 +123,11 @@
       newList: []
     }
     methods = {
-      click() {
+      click(goodsId) {
         console.log('click')
+        wepy.navigateTo({
+          url: `./productDetail?goodsId=${goodsId}`
+        })
       }
     }
 

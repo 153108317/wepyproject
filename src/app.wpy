@@ -25,6 +25,7 @@ export default class extends wepy.app {
         'pages/home/home',
         'pages/index/index',
         'pages/home/product',
+        'pages/home/productDetail',
         'pages/test/test'
       ],
       window: {

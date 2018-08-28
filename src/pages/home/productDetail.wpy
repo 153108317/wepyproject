@@ -1,0 +1,33 @@
+<template>
+  <productdetailswiper :list.sync="list" :autoplay.sync="autoplay" :indicatorDots.sync="indicatorDots" :interval="interval"></productdetailswiper>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import productdetailswiper from '../../components/productdetailswiper'
+
+  export default class extends wepy.page {
+    components = {
+      productdetailswiper
+    }
+    data = {
+      list: [],
+      indicatorDots: true,
+      autoplay: true,
+      interval: 3000
+    }
+    methods = {}
+
+    onLoad(q) {
+      var url = `https://api.pinduoduo.com/api/targaryen/query_goods_detail?goodsId=${q.goodsId}`
+      wepy.request(url).then((res) => {
+        this.list = [...res.data.result.galleryUrls]
+        this.$apply()
+      })
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
