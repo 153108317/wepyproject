@@ -14,7 +14,10 @@
 
   export default class ProductDetailSwiper extends wepy.component {
     props = {
-      list: [],
+      list: {
+        type: Array,
+        default: []
+      },
       indicatorDots: {
         type: [Boolean],
         default: false
@@ -41,6 +44,7 @@
 
 <style lang="less" scoped>
   .swiper {
+    height: ~'750rpx';
     .image {
       width: 100%;
       height: ~'750rpx';

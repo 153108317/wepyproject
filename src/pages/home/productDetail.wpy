@@ -1,5 +1,31 @@
 <template>
-  <productdetailswiper :list.sync="list" :autoplay.sync="autoplay" :indicatorDots.sync="indicatorDots" :interval="interval"></productdetailswiper>
+  <view wx:if="{{result}}">
+    <productdetailswiper :list.sync="list" :autoplay.sync="autoplay" :indicatorDots.sync="indicatorDots"
+                         :interval="interval"></productdetailswiper>
+    <view class="content">
+      <view class="content-top">
+      <span class="left">
+        <text class='type' wx:if="{{result.mallName}}">{{result.mallName}}</text>
+        {{result.goodsName}}
+      </span>
+        <view class="right">分享赚钱</view>
+      </view>
+      <view class="content-middle">
+        <text class="price">¥{{(result.goodsFactPrice-result.couponPrice)/100}}</text>
+        <text class="tag">券后价</text>
+        <text class="right">已售{{result.soldQuantity}}件</text>
+      </view>
+      <view class="content-bottom">
+        原价<span class="rmb">¥</span><span class="price">{{result.goodsFactPrice/100}}</span>
+      </view>
+      <view class="line"></view>
+      <view class="detail"> 商品详情</view>
+    </view>
+    <block wx:if="{{gallery.length>0}}" wx:for="{{gallery}}" wx:key="1">
+      <image src="{{item.url}}"/>
+    </block>
+    <view wx:if='{{!isTop}}' class="post" @tap="backToTop">^</view>
+  </view>
 </template>
 
 <script>
@@ -14,20 +40,174 @@
       list: [],
       indicatorDots: true,
       autoplay: true,
-      interval: 3000
+      interval: 3000,
+      result: {},
+      gallery: [],
+      isTop: true
     }
     methods = {}
 
+    backToTop() {
+      wepy.pageScrollTo({
+        scrollTop: 0,
+        duration: 400
+      })
+      this.isTop = true
+      this.$apply()
+    }
+
+    onPageScroll(e) {
+      if (e.scrollTop > 200 && this.isTop) {
+        this.isTop = false
+        this.$apply()
+      } else if (e.scrollTop < 100 && !this.isTop) {
+        this.isTop = true
+        this.$apply()
+      }
+    }
+
     onLoad(q) {
+      wepy.setNavigationBarTitle({
+        title: '商品详情'
+      })
+      this.getData(q)
+    }
+
+    getData(q) {
       var url = `https://api.pinduoduo.com/api/targaryen/query_goods_detail?goodsId=${q.goodsId}`
       wepy.request(url).then((res) => {
+        this.result = res.data.result
         this.list = [...res.data.result.galleryUrls]
+        this.$apply()
+      })
+      var url1 = `https://api.pinduoduo.com/v5/goods/${q.goodsId}`
+      wepy.request(url1).then((res) => {
+        var result = res.data
+        this.gallery = [...result.gallery]
         this.$apply()
       })
     }
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  .line {
+    background: #f6f6f6;
+    width: ~'750rpx';
+    height: ~'20rpx';
+    margin-left: ~'-20rpx';
+  }
 
+  .content {
+    padding: ~'20rpx';
+    box-sizing: border-box;
+    background: white;
+    .content-top {
+      display: flex;
+      flex-direction: row;
+      .left {
+        width: ~"610rpx";
+        flex: 1;
+        font-family: PingFangSC-Medium;
+        font-size: ~'30rpx';
+        color: #333333;
+        text-align: justify;
+        line-height: ~'45rpx';
+        text-overline: 2;
+        .type {
+          border: ~'2rpx' solid #fb535a;
+          border-radius: ~'4rpx';
+          height: ~'32rpx';
+          font-family: PingFangSC-Regular;
+          font-size: ~'24rpx';
+          color: #fb5865;
+          text-align: center;
+          line-height: ~'32rpx';
+          display: inline-block;
+          white-space: nowrap;
+        }
+      }
+      .right {
+        font-family: PingFangSC-Medium;
+        margin-left: ~'10rpx';
+        font-size: ~'20rpx';
+        width: ~'40rpx';
+        color: #fb5858;
+        text-align: center;
+        line-height: ~'24rpx';
+      }
+    }
+    .content-middle {
+      display: flex;
+      margin-top: ~'20rpx';
+      width: 100%;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      align-items: center;
+      .price {
+        font-family: PingFangSC-Medium;
+        font-size: 28px;
+        color: #fe1a18;
+        text-align: justify;
+        line-height: 50px;
+        vertical-align: middle;
+      }
+      .tag {
+        background-image: linear-gradient(-45deg, #ff6d69 0%, #ff4573 96%);
+        border-radius: ~'6rpx';
+        width: ~'100rpx';
+        margin-left: ~'12rpx';
+        height: ~'40rpx';
+        font-family: PingFangSC-Regular;
+        font-size: ~'26rpx';
+        color: #ffffff;
+        text-align: center;
+        line-height: ~'40rpx';
+      }
+      .right {
+        flex: 1;
+        font-family: PingFangSC-Regular;
+        font-size: ~'24rpx';
+        color: #8f8f8f;
+        text-align: right;
+      }
+    }
+    .content-bottom {
+      font-family: PingFangSC-Regular;
+      font-size: ~'24rpx';
+      color: #8f8f8e;
+      text-align: justify;
+      padding-bottom: ~'30rpx';
+      box-sizing: border-box;
+      .rmb {
+        padding-left: ~'10rpx';
+        text-decoration: line-through;
+      }
+      .price {
+        text-decoration: line-through;
+      }
+    }
+    .detail {
+      font-family: PingFangSC-Regular;
+      font-size: ~'28rpx';
+      color: #333333;
+      text-align: justify;
+      padding-top: ~'20rpx';
+    }
+  }
+
+  .post {
+    float: right;
+    background-color: #ffff00;
+    position: fixed;
+    width: ~'100rpx';
+    height: ~'100rpx';
+    bottom: ~'100rpx';
+    right: ~'50rpx';
+    text-align: center;
+    line-height: ~'100rpx';
+    border: 0 solid #ffffff;
+    border-radius: 500px;
+    box-shadow: 4px 1px 1px #cccccc;
+  }
 </style>
