@@ -113,7 +113,12 @@
         color: #333333;
         text-align: justify;
         line-height: ~'45rpx';
-        text-overline: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+
         .type {
           border: ~'2rpx' solid #fb535a;
           border-radius: ~'4rpx';
