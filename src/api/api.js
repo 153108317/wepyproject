@@ -1,16 +1,7 @@
 import wepy from 'wepy'
-const baseurl = 'https://hpyx.vxiaoke360.com/'
-export default async function request(api, options) {
+const baseurl = 'https://api.pinduoduo.com/'
+import {request} from '../../utils/network'
+export async function detail(api) {
   console.log(api)
-  return wepy.request({url: encodeURI(baseurl + api), ...options})
-    .then((response) => {
-      console.log(api, response.data)
-      let data = response.data.data
-      return data
-    })
-    .catch((e) => {
-      console.log(e.toString())
-      return false
-    }
-  )
+  return await request(baseurl + api, null)
 }

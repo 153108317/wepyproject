@@ -1,0 +1,27 @@
+<template>
+    <view class="containt">
+
+      <text>xxxx</text>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import util from '../../utils/util'
+  import mini from '../../mixins/test'
+
+  export default class My extends wepy.page {
+    mixins = [mini];
+    onLoad() {
+      util.login(this)
+    }
+    setCode(res) {
+      console.log('setCode', res)
+    }
+  }
+</script>
+
+<style lang ='less' scoped>
+  .containt{}
+
+</style>

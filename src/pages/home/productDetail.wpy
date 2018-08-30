@@ -31,6 +31,7 @@
 <script>
   import wepy from 'wepy'
   import productdetailswiper from '../../components/productdetailswiper'
+  import { detail } from '../../api/api'
 
   export default class extends wepy.page {
     components = {
@@ -80,6 +81,11 @@
         this.list = [...res.data.result.galleryUrls]
         this.$apply()
       })
+      // let list = await detail(`api/targaryen/query_goods_detail?goodsId=${q.goodsId}`, null)
+      // if (list) {
+      //   this.list = [...list]
+      //   this.$apply()
+      // }
       var url1 = `https://api.pinduoduo.com/v5/goods/${q.goodsId}`
       wepy.request(url1).then((res) => {
         var result = res.data
@@ -156,6 +162,8 @@
         text-align: justify;
         line-height: 50px;
         vertical-align: middle;
+        border: ~'1rpx' dotted #f00 ;
+        border-radius: ~'3rpx';
       }
       .tag {
         background-image: linear-gradient(-45deg, #ff6d69 0%, #ff4573 96%);

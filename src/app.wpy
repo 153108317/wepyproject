@@ -26,6 +26,7 @@ export default class extends wepy.app {
         'pages/index/index',
         'pages/home/product',
         'pages/home/productDetail',
+        'pages/my/my',
         'pages/test/test'
       ],
       window: {
@@ -68,7 +69,7 @@ export default class extends wepy.app {
         },
         {
           text: '我的',
-          pagePath: 'pages/index/index',
+          pagePath: 'pages/my/my',
             // pagePath: 'pages/person/index',
           iconPath: 'assets/icon_user.png',
           selectedIconPath: 'assets/icon_user_selected.png'
@@ -79,7 +80,9 @@ export default class extends wepy.app {
     };
 
     globalData = {
-      userInfo: null
+      userInfo: {
+        code: ''
+      }
     };
 
     constructor() {

@@ -154,7 +154,6 @@
         }
 
         that.$apply()
-        console.log(that.list)
       })
     }
 
