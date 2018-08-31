@@ -1,8 +1,12 @@
 <template>
-    <view class="containt">
-
-      <text>xxxx</text>
+  <text wx:if="{{userInfo}}" class="clearn" @tap="clearn">清除</text>
+  <view class="containt">
+    <view class="containt" wx:if="{{userInfo}}">
+      <image src="{{avatarUrl}}"/>
+      <text>{{nickName}}</text>
     </view>
+    <button wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="userinfo">登录</button>
+  </view>
 </template>
 
 <script>
@@ -12,16 +16,81 @@
 
   export default class My extends wepy.page {
     mixins = [mini];
+    data = {
+      avatarUrl: '/assets/icon_user.png',
+      nickName: 'nickName',
+      userInfo: {}
+    }
+    methods = {
+      userinfo(res) {
+        console.log('userinfo', res.detail)
+        console.log('userinfo', res.detail.userInfo)
+        if (res.detail && res.detail.userInfo) {
+          this.$parent.globalData.userInfo = res.detail.userInfo
+          util.saveUserInfo(res.detail.userInfo)
+          this.setUserInfo()
+        }
+      },
+      clearn() {
+        util.saveUserInfo(null)
+        this.setUserInfo()
+        this.userinfo = {}
+      }
+    }
+
     onLoad() {
       util.login(this)
+      this.setUserInfo()
     }
+
+    setUserInfo() {
+      this.userInfo = util.getUserInfo()
+      if (this.userInfo) {
+        this.avatarUrl = this.userInfo.avatarUrl
+        this.nickName = this.userInfo.nickName
+      }
+    }
+
     setCode(res) {
       console.log('setCode', res)
     }
   }
 </script>
 
-<style lang ='less' scoped>
-  .containt{}
+<style lang='less' scoped>
+  @w: 100%;
+  @h: 100%;
+  .clearn {
+    position: absolute;
+    padding: ~'13rpx';
+    padding-top: ~'3rpx';
+    padding-bottom: ~'3rpx';
+    border-radius: ~'3rpx';
+    border: ~'2rpx' solid #f00;
+    left: ~'600rpx';
+    color: #333;
+  }
+
+  .containt {
+    width: @w;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  image {
+    width: ~"130rpx";
+    height: ~'130rpx';
+    border-radius: 50%;
+    margin-top: ~'200rpx';
+    margin-bottom: ~'20rpx';
+  }
+
+  button {
+    background: lawngreen;
+    margin-top: ~'300rpx';
+
+  }
 
 </style>

@@ -144,9 +144,9 @@
           this.hasMore = false
           return
         }
-        for (var item in this.newList) {
-          console.log(item)
-        }
+        // for (var item in this.newList) {
+        // //  console.log(item)
+        // }
         if (this.currentPage === 1) {
           that.list = this.newList
         } else {
