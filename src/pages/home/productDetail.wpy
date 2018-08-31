@@ -31,7 +31,7 @@
 <script>
   import wepy from 'wepy'
   import productdetailswiper from '../../components/productdetailswiper'
-  import { detail } from '../../api/api'
+  import { detail, goods } from '../../api/api'
 
   export default class extends wepy.page {
     components = {
@@ -74,24 +74,18 @@
       this.getData(q)
     }
 
-    getData(q) {
-      var url = `https://api.pinduoduo.com/api/targaryen/query_goods_detail?goodsId=${q.goodsId}`
-      wepy.request(url).then((res) => {
-        this.result = res.data.result
-        this.list = [...res.data.result.galleryUrls]
+    async getData(q) {
+      let data = await detail(q.goodsId)
+      if (data.result) {
+        this.result = data.result
+        this.list = [...data.result.galleryUrls]
         this.$apply()
-      })
-      // let list = await detail(`api/targaryen/query_goods_detail?goodsId=${q.goodsId}`, null)
-      // if (list) {
-      //   this.list = [...list]
-      //   this.$apply()
-      // }
-      var url1 = `https://api.pinduoduo.com/v5/goods/${q.goodsId}`
-      wepy.request(url1).then((res) => {
-        var result = res.data
-        this.gallery = [...result.gallery]
+      }
+      let res = await goods(q.goodsId)
+      if (res.gallery) {
+        this.gallery = [...res.gallery]
         this.$apply()
-      })
+      }
     }
   }
 </script>
@@ -162,7 +156,7 @@
         text-align: justify;
         line-height: 50px;
         vertical-align: middle;
-        border: ~'1rpx' dotted #f00 ;
+        border: ~'1rpx' dotted #f00;
         border-radius: ~'3rpx';
       }
       .tag {
