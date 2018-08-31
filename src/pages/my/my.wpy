@@ -39,6 +39,9 @@
     }
 
     onLoad() {
+      wepy.setNavigationBarTitle({
+        title: '我的'
+      })
       util.login(this)
       this.setUserInfo()
     }
