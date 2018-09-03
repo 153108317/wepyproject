@@ -8,7 +8,7 @@
         <text class='type' wx:if="{{result.mallName}}">{{result.mallName}}</text>
         {{result.goodsName}}
       </span>
-        <view class="right">分享赚钱</view>
+        <view class="right" @tap="share">分享赚钱</view>
       </view>
       <view class="content-middle">
         <text class="price">¥{{(result.goodsFactPrice-result.couponPrice)/100}}</text>
@@ -25,17 +25,20 @@
       <image src="{{item.url}}"/>
     </block>
     <view wx:if='{{!isTop}}' class="post" @tap="backToTop">^</view>
+    <shareView :isShow.sync="isShare"></shareView>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import productdetailswiper from '../../components/productdetailswiper'
+  import shareView from '../../components/shareView'
   import { detail, goods } from '../../api/api'
 
   export default class extends wepy.page {
     components = {
-      productdetailswiper
+      productdetailswiper,
+      shareView
     }
     data = {
       list: [],
@@ -44,10 +47,33 @@
       interval: 3000,
       result: {},
       gallery: [],
-      isTop: true
+      isTop: true,
+      isShare: false
     }
-    methods = {}
+    methods = {
+      share() {
+        this.isShare = true
+      }
+    }
+    events = {
+      close() {
+        this.isShare = false
+      }
+    }
 
+    onShareAppMessage(res) {
+      this.isShare = false
+      this.$apply()
+      return {
+        title: 'welclome',
+        imageUrl: 'https://image.vxiaoke360.com/apprentice-share-cs-1.png',
+        path: '/page/home/home',
+        success: () => {
+         // this.$invoke('shareView', 'close')
+        }
+
+      }
+    }
     backToTop() {
       wepy.pageScrollTo({
         scrollTop: 0,

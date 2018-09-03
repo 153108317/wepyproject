@@ -1,0 +1,86 @@
+<template>
+  <view wx:if="{{isShow}}" class="containt" @touchmove.stop="stopMove">
+    <view class="bottom">
+      <button class="button" open-type="share">
+        <image src="/assets/ic_wx_share.png"/>
+        <text>分享到微信</text>
+      </button>
+      <button class="button" @tap="shareFriends">
+        <image src="/assets/ic_friends_share.png"/>
+        <text>保存朋友圈分享图片</text>
+      </button>
+    </view>
+
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class shareView extends wepy.component {
+    props = {
+      isShow: {
+        type: [Boolean],
+        default: false
+      }
+    }
+    methods = {
+      stopMove() {
+        return false
+      },
+      shareFriends() {
+        this.$emit('close')
+      }
+
+    }
+  }
+</script>
+
+<style lang="less" scoped>
+  @match: 100%;
+  @imgwidth: ~'60rpx';
+  .containt {
+    height: @match;
+    width: @match;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    .bottom {
+      width: @match;
+      position: absolute;
+      padding: ~'10rpx';
+      background: white;
+      bottom: 0px;
+      display: flex;
+      flex-direction: row;
+      .button {
+        width: ~'375rpx';
+        flex-direction: column;
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:after{
+          border: none;
+        }
+        image {
+          display: flex;
+          justify-content: center;
+          width: @imgwidth;
+          height: @imgwidth;
+
+        }
+        text {
+          flex: 1;
+          font-size: ~'24rpx';
+          color: #666;
+          padding-top: ~'10rpx';
+        }
+
+      }
+    }
+
+  }
+</style>
