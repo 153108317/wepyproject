@@ -21,7 +21,7 @@
   export default class shareView extends wepy.component {
     props = {
       isShow: {
-        type: [Boolean],
+        type: Boolean,
         default: false
       }
     }
