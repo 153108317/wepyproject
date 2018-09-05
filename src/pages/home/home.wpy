@@ -74,12 +74,7 @@
       },
       mtabs(item) {
         this.tabId = item.optId
-
-        this.$invoke('product', 'product1', 0, this.tabId)
-        // wepy.showModal(
-        //   {
-        //     title: item.name
-        //   })
+        this.$invoke('product', 'product1', 1, this.tabId)
       }
     }
 

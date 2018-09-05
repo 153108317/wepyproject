@@ -73,7 +73,7 @@
     color: #fd784c;
     font-size: ~'18rpx';
     text-align: center;
-    line-height:~'22rpx' ;
+    line-height: ~'22rpx';
   }
 
   .bottom-btn-pay {
@@ -112,11 +112,12 @@
 
 <script>
   import wepy from 'wepy'
+  import { goodsList } from '../api/api'
 
   export default class Product extends wepy.component {
     data = {
       list: [],
-      currentPage: Number,
+      currentPage: 1,
       tabId: -99999,
       hasMore: true,
       newList: []
@@ -129,32 +130,24 @@
       }
     }
 
-    getProduct(id) {
+    async getProduct(id) {
       if (!this.hasMore) {
         return
       }
+      let data = await goodsList(id, this.currentPage)
+      this.newList = data.result.goodsList
+      if (this.newList.length < 1) {
+        this.hasMore = false
+        return
+      }
+      if (this.currentPage === 1) {
+        this.list = []
+        this.list = this.newList
+      } else {
+        this.list = [...this.list, ...this.newList]
+      }
       this.currentPage++
-      var url = `https://api.pinduoduo.com/api/targaryen/query_goods_list_by_opt_id?optId=${id}&pageNum=${this.currentPage}&pageSize=20&sortType=1`
-      var that = this
-      console.log(url)
-      wepy.request(url).then((respone) => {
-        this.newList =
-         respone.data.result.goodsList
-        if (this.newList.length < 1) {
-          this.hasMore = false
-          return
-        }
-        // for (var item in this.newList) {
-        // //  console.log(item)
-        // }
-        if (this.currentPage === 1) {
-          that.list = this.newList
-        } else {
-          that.list = [...this.list, ...this.newList]
-        }
-
-        that.$apply()
-      })
+      this.$apply()
     }
 
     onLoad() {
@@ -169,8 +162,9 @@
     }
 
     product1(p, id) {
+      this.hasMore = true
       console.log(p)
-      if (p === 0) {
+      if (p === 1) {
         this.currentPage = p
       }
       this.tabId = id
